@@ -98,7 +98,9 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("Finish"))
         {
-            HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score);
+            //  HighScore.TrySet(SceneManager.GetActiveScene().buildIndex, (int)score);
+            StageResultSaver.SaveStage(SceneManager.GetActiveScene().buildIndex, (int)score);
+
             collision.GetComponent<LevelObject>().MoveToNextLevel();
         }
 
@@ -122,9 +124,11 @@ public class PlayerController : MonoBehaviour
         {
             isGiant = true;
             Invoke(nameof(ResetGiant), 3f);
+            score += collision.GetComponent<ItemObject>().GetPoint();
             Destroy(collision.gameObject);
+            
             // 만약 아이템을 먹었으면 점수를 10점 올려준다.
-            score += 10f;
+            //  score += 10f;
         }
 
         if (collision.CompareTag("SpeedItem"))
@@ -132,7 +136,8 @@ public class PlayerController : MonoBehaviour
             isMove = true;
             Invoke(nameof(ResetMove), 7f);
             Destroy(collision.gameObject);
-            score += 10f;
+            score += collision.GetComponent<ItemObject>().GetPoint();
+            //  score += 10f;
         }
 
 
@@ -141,7 +146,8 @@ public class PlayerController : MonoBehaviour
             isJump = true;
             Invoke(nameof(ResetJump), 3f);
             Destroy(collision.gameObject);
-            score += 10f;
+            score += collision.GetComponent<ItemObject>().GetPoint();
+            //  score += 10f;
         }
 
         if (isMove)
